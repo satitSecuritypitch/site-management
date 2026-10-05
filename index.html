@@ -334,5 +334,95 @@ footer { color: var(--muted); font-size: 12.5px; margin-top: 40px; }
 <figcaption>ไฟล์ต้องผ่าน complete (UPLOADED) ก่อน ถึงจะส่งเข้า site ได้ การผูกกับ site เกิดตอนบันทึก site ไม่ใช่ตอนอัปโหลด ดังนั้นไฟล์ที่อัปโหลดแล้วแต่ไม่ได้บันทึก site จะยังไม่มี links.site</figcaption>
 </figure>
 
+<h2>7. โครงสร้างโค้ดของ site</h2>
+<figure>
+<div class="figwrap">
+<svg viewBox="0 0 960 330" role="img" aria-label="คำขอ HTTP ผ่าน router ไป service แล้วไป repository และ MongoDB ส่วน service ใช้โมดูลอื่นอีกห้าตัว ได้แก่ ocr, files.service, vendors.service, core.storage และ core.database">
+  <defs>
+    <marker id="ah5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0 10 5 0 10z"/></marker>
+  </defs>
+
+  <rect class="st" x="30" y="40" width="130" height="60" rx="3"/>
+  <text class="st-t" x="46" y="66">HTTP</text>
+  <text class="st-s" x="46" y="84">คำขอจาก web</text>
+
+  <rect class="st st-on" x="210" y="40" width="150" height="60" rx="3"/>
+  <text class="st-t" x="226" y="66">router.py</text>
+  <text class="st-s" x="226" y="84">สิทธิ์, response</text>
+
+  <rect class="st st-on" x="410" y="40" width="150" height="60" rx="3"/>
+  <text class="st-t" x="426" y="66">service.py</text>
+  <text class="st-s" x="426" y="84">กฎทางธุรกิจ</text>
+
+  <rect class="st st-on" x="610" y="40" width="150" height="60" rx="3"/>
+  <text class="st-t" x="626" y="66">repository.py</text>
+  <text class="st-s" x="626" y="84">คิวรี, index</text>
+
+  <rect class="st" x="810" y="40" width="120" height="60" rx="3"/>
+  <text class="st-t" x="826" y="66">MongoDB</text>
+  <text class="st-s" x="826" y="84">4 collection</text>
+
+  <path class="ar" d="M160 70 H210" marker-end="url(#ah5)"/>
+  <text class="al" x="185" y="62" text-anchor="middle">เรียก</text>
+  <path class="ar" d="M360 70 H410" marker-end="url(#ah5)"/>
+  <text class="al" x="385" y="62" text-anchor="middle">ส่งต่อ</text>
+  <path class="ar" d="M560 70 H610" marker-end="url(#ah5)"/>
+  <text class="al" x="585" y="62" text-anchor="middle">query</text>
+  <path class="ar" d="M760 70 H810" marker-end="url(#ah5)"/>
+
+  <path class="ar" d="M485 100 V140" />
+  <path class="ar" d="M117 140 H852" />
+  <path class="ar" d="M117 140 V168" marker-end="url(#ah5)"/>
+  <path class="ar" d="M267 140 V168" marker-end="url(#ah5)"/>
+  <path class="ar" d="M417 140 V168" marker-end="url(#ah5)"/>
+  <path class="ar" d="M567 140 V168" marker-end="url(#ah5)"/>
+  <path class="ar" d="M717 140 V168" marker-end="url(#ah5)"/>
+  <path class="ar" d="M852 140 V168" marker-end="url(#ah5)"/>
+  <text class="al" x="500" y="134">ใช้</text>
+
+  <rect class="st" x="30" y="170" width="165" height="62" rx="3"/>
+  <text class="st-t" x="42" y="194">ocr.py</text>
+  <text class="st-s" x="42" y="214">อ่านไฟล์, ดึง field</text>
+
+  <rect class="st" x="210" y="170" width="165" height="62" rx="3"/>
+  <text class="st-t" x="222" y="194">files.service</text>
+  <text class="st-s" x="222" y="214">ขนาดและชนิดไฟล์</text>
+
+  <rect class="st" x="390" y="170" width="165" height="62" rx="3"/>
+  <text class="st-t" x="402" y="194">vendors.service</text>
+  <text class="st-s" x="402" y="214">รหัส, ชื่อซ้ำ</text>
+
+  <rect class="st" x="570" y="170" width="165" height="62" rx="3"/>
+  <text class="st-t" x="582" y="194">core.storage</text>
+  <text class="st-s" x="582" y="214">S3 (get, delete)</text>
+
+  <rect class="st" x="750" y="170" width="180" height="62" rx="3"/>
+  <text class="st-t" x="762" y="194">core.database</text>
+  <text class="st-s" x="762" y="214">start_session, transaction</text>
+
+  <text class="note" x="30" y="268">ลูกศรแนวตั้งทั้งหมดคือการเรียกใช้จาก service.py</text>
+  <text class="note-m" x="30" y="290">contracts.service ใช้ OcrFailedError, OcrUnavailableError, SiteNotFoundError และ sites.ocr จาก sites</text>
+  <text class="note-m" x="30" y="308">ซึ่งหมายความว่าโมดูลสัญญาพึ่งโมดูลไซต์ อาจย้ายโค้ด OCR และ error ร่วมไปไว้ที่อื่น</text>
+</svg>
+</div>
+<figcaption>คำขอเดินจาก router ผ่าน service ไป repository แล้วถึงฐานข้อมูล โมดูลอื่นและ core ถูกเรียกจาก service เท่านั้น ส่วน contracts ยืม OCR และ error จาก sites</figcaption>
+</figure>
+
+<h2>8. ไฟล์ของ site และหน้าที่</h2>
+<div class="tbl-wrap">
+<table>
+  <thead>
+    <tr><th>ไฟล์</th><th>หน้าที่</th><th>พึ่งพาอะไร</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="mono">router.py</td><td>เส้นทาง /sites และ /sites/attachments, กำหนดสิทธิ์และ response model</td><td>core.security, core.config, schema, service</td></tr>
+    <tr><td class="mono">schema.py</td><td>ตัวแปรขาเข้าและขาออก, กฎวันที่, enum ของ type และหมวดไฟล์</td><td>contracts.schema, files.schema, vendors.schema</td></tr>
+    <tr><td class="mono">service.py</td><td>ตรวจสัญญาและไฟล์, transaction ตอนสร้าง, ลบพร้อมไฟล์, OCR</td><td>repository ของ contracts, files, vendors; files.service; vendors.service; core.storage; core.database; common.sequence</td></tr>
+    <tr><td class="mono">repository.py</td><td>คิวรี, คำนวณสถานะและจำนวนสัญญา, ตัวกรอง, index</td><td>common.audit, common.lifecycle, common.mongo, schema</td></tr>
+    <tr><td class="mono">ocr.py</td><td>อ่าน PDF หรือรูป, ดึง field ด้วย regex ไม่รู้จัก site</td><td>pypdfium2, pytesseract, Pillow</td></tr>
+  </tbody>
+</table>
+</div>
+
 <footer>อ้างอิง: app/modules/sites/schema.py, repository.py, service.py · app/modules/contracts/repository.py · app/modules/files/repository.py</footer>
 </div>
