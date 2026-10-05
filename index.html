@@ -1,0 +1,338 @@
+<title>ผังความเชื่อมโยง Site</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: site at the center, everything else points at it. Two figures, one table, one list.
+   Palette: warm neutral ground, deep teal for the site (the hub), amber for the transaction boundary. */
+:root {
+  --bg: #FFFFFF; --fg: #1B211E; --muted: #5C6661; --line: #A3ABA6;
+  --surface: #FFFFFF; --accent: #0E6A5B; --warn: #9A5B12;
+  --sans: "Noto Sans Thai", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+
+body { background: var(--bg); color: var(--fg); font: 15px/1.6 var(--sans); }
+.page { max-width: 980px; margin: 0 auto; padding-inline: 16px; padding-block: 32px 56px; }
+h1 { font-size: 24px; font-weight: 600; margin: 0 0 8px; text-wrap: balance; }
+h2 { font-size: 17px; font-weight: 600; margin: 40px 0 12px; text-wrap: balance; }
+.lede { color: var(--muted); max-width: 65ch; margin: 0; }
+code, .mono { font-family: var(--mono); font-size: 12px; }
+
+figure { margin: 20px 0 0; }
+.figwrap {
+  overflow-x: auto; background: var(--surface);
+  border: 1px solid var(--line); border-radius: 4px; padding: 12px;
+}
+figure svg { display: block; width: 100%; min-width: 760px; height: auto; }
+figcaption { color: var(--muted); font-size: 13.5px; margin-top: 10px; max-width: 65ch; }
+
+.tbl-wrap { overflow-x: auto; margin-top: 12px; }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px; min-width: 640px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--muted); font-weight: 500; font-size: 12.5px; }
+td.num { font-variant-numeric: tabular-nums; }
+
+ol.notes { padding-left: 20px; margin: 12px 0 0; max-width: 70ch; }
+ol.notes li { margin-bottom: 10px; }
+footer { color: var(--muted); font-size: 12.5px; margin-top: 40px; }
+
+/* SVG */
+.bx { fill: var(--surface); stroke: var(--line); stroke-width: 1.25; }
+.bx-hub { stroke: var(--accent); stroke-width: 2; }
+.hd { font: 600 14px var(--sans); fill: var(--fg); }
+.hd-hub { fill: var(--accent); }
+.fl { font: 500 11.5px var(--mono); fill: var(--fg); }
+.fd { font: italic 500 11.5px var(--mono); fill: var(--muted); }
+.sep { stroke: var(--line); stroke-dasharray: 3 3; }
+.ar { fill: none; stroke: var(--muted); stroke-width: 1.5; }
+.ar-hub { stroke: var(--accent); stroke-width: 1.75; }
+.ah { fill: var(--muted); }
+.ah-hub { fill: var(--accent); }
+.al { font: 500 11px var(--mono); fill: var(--muted); }
+.al-hub { fill: var(--accent); }
+.tx { fill: none; stroke: var(--warn); stroke-width: 1.25; stroke-dasharray: 6 4; }
+.tx-lbl { font: 600 12.5px var(--sans); fill: var(--warn); }
+.st { fill: var(--bg); stroke: var(--line); stroke-width: 1.25; }
+.st-t { font: 600 13px var(--sans); fill: var(--fg); }
+.st-s { font: 400 11.5px var(--sans); fill: var(--muted); }
+.st-on { stroke: var(--accent); stroke-width: 2; }
+.dot { fill: var(--fg); }
+.lb { font: 500 12px var(--sans); fill: var(--muted); }
+.note { font: 400 13px var(--sans); fill: var(--fg); }
+.note-m { font: 400 13px var(--sans); fill: var(--muted); }
+
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+
+<div class="page">
+<h1>ผังความเชื่อมโยงของ Site</h1>
+<p class="lede">Site อยู่ตรงกลาง สัญญาและไฟล์ชี้มาที่ site ส่วน site ไม่เก็บรายการสัญญาหรือไฟล์ไว้เอง ค่าบางตัวที่ API ส่งออกคำนวณตอนอ่าน</p>
+
+<h2>1. ข้อมูลเชื่อมกันอย่างไร</h2>
+<figure>
+<div class="figwrap">
+<svg viewBox="0 0 960 520" role="img" aria-label="site เป็นศูนย์กลาง contracts ชี้มาที่ sites ด้วย site_id และ files ชี้มาด้วย links.site ไฟล์ที่แนบสัญญาชี้ไปที่ contracts ด้วย links.contract contracts ชี้ไปที่ vendors ด้วย vendor_id และ counters ให้รหัส site_code">
+  <defs>
+    <marker id="ah1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0 10 5 0 10z"/></marker>
+    <marker id="ah1h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-hub" d="M0 0 10 5 0 10z"/></marker>
+  </defs>
+
+  <!-- files -->
+  <rect class="bx" x="30" y="170" width="230" height="190" rx="3"/>
+  <text class="hd" x="46" y="196">files</text>
+  <text class="fl" x="46" y="222">module = "sites"</text>
+  <text class="fl" x="46" y="244">links.site → sites</text>
+  <text class="fl" x="46" y="266">links.contract → contracts</text>
+  <text class="fl" x="46" y="288">category</text>
+  <text class="fl" x="46" y="310">upload_status</text>
+  <text class="fl" x="46" y="332">ocr_status · ocr_fields</text>
+  <text class="fl" x="46" y="354">s3_key</text>
+
+  <!-- sites (hub) -->
+  <rect class="bx bx-hub" x="340" y="140" width="250" height="300" rx="3"/>
+  <text class="hd hd-hub" x="356" y="166">sites</text>
+  <text class="fl" x="356" y="192">_id</text>
+  <text class="fl" x="356" y="212">site_code</text>
+  <text class="fl" x="356" y="232">name</text>
+  <text class="fl" x="356" y="252">type</text>
+  <text class="fl" x="356" y="272">address</text>
+  <text class="fl" x="356" y="292">location</text>
+  <text class="fl" x="356" y="312">start_date</text>
+  <text class="fl" x="356" y="332">end_date</text>
+  <text class="fl" x="356" y="352">status</text>
+  <line class="sep" x1="356" y1="368" x2="574" y2="368"/>
+  <text class="fd" x="356" y="388">status  (ตอบกลับ)</text>
+  <text class="fd" x="356" y="410">contract_count</text>
+  <text class="fd" x="356" y="430">total_contract_value</text>
+
+  <!-- contracts -->
+  <rect class="bx" x="660" y="170" width="260" height="190" rx="3"/>
+  <text class="hd" x="676" y="194">contracts</text>
+  <text class="fl" x="676" y="216">site_id → sites</text>
+  <text class="fl" x="676" y="234">vendor_id → vendors</text>
+  <text class="fl" x="676" y="252">contract_no</text>
+  <text class="fl" x="676" y="270">category</text>
+  <text class="fl" x="676" y="288">contract_value</text>
+  <text class="fl" x="676" y="306">contract_start</text>
+  <text class="fl" x="676" y="324">contract_end</text>
+  <text class="fl" x="676" y="342">status</text>
+
+  <!-- vendors -->
+  <rect class="bx" x="660" y="420" width="260" height="80" rx="3"/>
+  <text class="hd" x="676" y="444">vendors</text>
+  <text class="fl" x="676" y="466">_id · vendor_code · name</text>
+  <text class="note-m" x="676" y="484">สร้างใหม่ใน transaction ของ site</text>
+
+  <!-- counters -->
+  <rect class="bx" x="340" y="470" width="250" height="50" rx="3"/>
+  <text class="hd" x="356" y="490">counters</text>
+  <text class="fl" x="356" y="508">{org}:SITE:{year} → seq</text>
+
+  <!-- arrows -->
+  <path class="ar ar-hub" d="M260 250 H340" marker-end="url(#ah1h)"/>
+  <text class="al al-hub" x="300" y="240" text-anchor="middle">links.site</text>
+
+  <path class="ar ar-hub" d="M660 250 H590" marker-end="url(#ah1h)"/>
+  <text class="al al-hub" x="625" y="240" text-anchor="middle">site_id</text>
+
+  <path class="ar" d="M145 170 V112 H790 V170" marker-end="url(#ah1)"/>
+  <text class="al" x="470" y="104" text-anchor="middle">links.contract</text>
+
+  <path class="ar" d="M790 360 V420" marker-end="url(#ah1)"/>
+  <text class="al" x="802" y="394">vendor_id</text>
+
+  <path class="ar ar-hub" d="M465 470 V442" marker-end="url(#ah1h)"/>
+  <text class="al al-hub" x="478" y="460">site_code</text>
+</svg>
+</div>
+<figcaption>ลูกศรเข้า site (สีเขียว) คือสิ่งที่ทำให้สัญญาและไฟล์ "เป็นของ site" ไหน ไฟล์ที่แนบกับสัญญาจะมี links.site ด้วย เพราะถูกผูกกับ site ในการบันทึกเดียวกัน ตัวเอียงในกล่อง sites คือค่าที่คำนวณตอนอ่าน ไม่ได้เก็บในเอกสาร</figcaption>
+</figure>
+
+<h2>2. ตอนสร้าง site ลำดับการทำงาน</h2>
+<figure>
+<div class="figwrap">
+<svg viewBox="0 0 960 250" role="img" aria-label="POST /sites ตรวจสัญญาและไฟล์ก่อน จากนั้นในหนึ่ง transaction จะ insert site, insert vendors ที่ใหม่, insert contracts และอัปเดต links ของไฟล์ ถ้าขั้นใดล้มทั้งหมดถูกยกเลิก">
+  <defs>
+    <marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0 10 5 0 10z"/></marker>
+  </defs>
+
+  <rect class="tx" x="326" y="66" width="626" height="118" rx="4"/>
+  <text class="tx-lbl" x="334" y="58">transaction เดียว: ขั้นใดล้ม ยกเลิกทั้งหมด</text>
+
+  <rect class="st" x="30" y="96" width="140" height="80" rx="3"/>
+  <text class="st-t" x="42" y="120">1 ตรวจสัญญา</text>
+  <text class="st-s" x="42" y="140">contract_no ซ้ำ</text>
+  <text class="st-s" x="42" y="158">vendor ที่ยังไม่มี</text>
+
+  <rect class="st" x="184" y="96" width="140" height="80" rx="3"/>
+  <text class="st-t" x="196" y="120">2 ตรวจไฟล์</text>
+  <text class="st-s" x="196" y="140">สถานะ UPLOADED</text>
+  <text class="st-s" x="196" y="158">ยังไม่ผูกกับ site</text>
+
+  <rect class="st" x="338" y="96" width="140" height="80" rx="3"/>
+  <text class="st-t" x="350" y="120">3 insert sites</text>
+  <text class="st-s" x="350" y="140">site_code ซ้ำ: ลองใหม่</text>
+  <text class="st-s" x="350" y="158">สูงสุด 5 ครั้ง</text>
+
+  <rect class="st" x="492" y="96" width="140" height="80" rx="3"/>
+  <text class="st-t" x="504" y="120">4 insert vendors</text>
+  <text class="st-s" x="504" y="140">เฉพาะชื่อที่ยังไม่มี</text>
+
+  <rect class="st" x="646" y="96" width="140" height="80" rx="3"/>
+  <text class="st-t" x="658" y="120">5 insert contracts</text>
+  <text class="st-s" x="658" y="140">site_id, vendor_id</text>
+
+  <rect class="st" x="800" y="96" width="140" height="80" rx="3"/>
+  <text class="st-t" x="812" y="120">6 update files</text>
+  <text class="st-s" x="812" y="140">links.site</text>
+  <text class="st-s" x="812" y="158">links.contract</text>
+
+  <path class="ar" d="M170 136 H184" marker-end="url(#ah2)"/>
+  <path class="ar" d="M324 136 H338" marker-end="url(#ah2)"/>
+  <path class="ar" d="M478 136 H492" marker-end="url(#ah2)"/>
+  <path class="ar" d="M632 136 H646" marker-end="url(#ah2)"/>
+  <path class="ar" d="M786 136 H800" marker-end="url(#ah2)"/>
+
+  <text class="note" x="30" y="222">ตอบกลับ 201: site ครบ พร้อม contracts, attachments และ created_vendors</text>
+  <text class="note-m" x="30" y="242">รหัส site ใช้ counter นอก transaction ถ้าขั้นที่ 3 ล้ม เลขนั้นจะข้าม (ไม่ซ้ำ)</text>
+</svg>
+</div>
+<figcaption>ขั้นที่ 1 และ 2 ทำก่อนเปิด transaction ขั้นที่ 3 ถึง 6 อยู่ในกรอบเดียวกัน ถ้า site ไม่ผ่าน ไม่มีสัญญา vendor หรือการผูกไฟล์ที่ค้างอยู่</figcaption>
+</figure>
+
+<h2>3. ตัวแปรของ site</h2>
+<div class="tbl-wrap">
+<table>
+  <thead>
+    <tr><th>ตัวแปร</th><th>ชนิด / ค่าที่ใช้ได้</th><th>เก็บหรือคำนวณ</th><th>กฎและที่มา</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="mono">_id</td><td>ObjectId (ส่งออกเป็น id)</td><td>เก็บ</td><td>ถูกอ้างจาก contracts.site_id และ files.links.site</td></tr>
+    <tr><td class="mono">organization_id</td><td>string</td><td>เก็บ</td><td>ทุก query กรองตามองค์กรจาก token</td></tr>
+    <tr><td class="mono">site_code</td><td>1–50 ตัว: A–Z 0–9 _ -</td><td>เก็บ</td><td>ส่งเองได้ ไม่งั้นได้ SITE-{ปี}-{ลำดับ} ไม่ซ้ำในองค์กรที่ยังไม่ถูกลบ</td></tr>
+    <tr><td class="mono">name</td><td>string 1–255</td><td>เก็บ</td><td>จำเป็น ค้นหาได้</td></tr>
+    <tr><td class="mono">type</td><td>HIGH_RISE_RESIDENTIAL · COMMERCIAL_MALL · INDUSTRIAL_LOGISTICS · INFRASTRUCTURE หรือ null</td><td>เก็บ</td><td>กรองได้ ไม่บังคับ</td></tr>
+    <tr><td class="mono">address</td><td>string สูงสุด 1000</td><td>เก็บ</td><td>ค้นหาได้</td></tr>
+    <tr><td class="mono">location</td><td>API: {lat, lng} · DB: GeoJSON Point</td><td>เก็บ</td><td>ค่า lat −90…90, lng −180…180; มี index GEOSPHERE</td></tr>
+    <tr><td class="mono">start_date / end_date</td><td>date</td><td>เก็บ</td><td>ไม่บังคับ; end ต้องไม่ก่อน start (ตรวจเฉพาะใน site เอง)</td></tr>
+    <tr><td class="mono">status (เก็บ)</td><td>ACTIVE · COMPLETED</td><td>เก็บ</td><td>PATCH ได้ ไม่มี NEAR_CLOSE ในฐานข้อมูล</td></tr>
+    <tr><td class="mono">status (ตอบกลับ)</td><td>ACTIVE · NEAR_CLOSE · COMPLETED</td><td>คำนวณ</td><td>จาก end_date และ NEAR_CLOSE_DAYS (ค่าเริ่มต้น 90) ไม่มี end_date = ACTIVE; end_date ที่ผ่านไปแล้วเป็น COMPLETED</td></tr>
+    <tr><td class="mono">contract_count</td><td>int</td><td>คำนวณ</td><td>นับ contracts ที่ยังไม่ถูกลบ ทุกครั้งที่อ่าน</td></tr>
+    <tr><td class="mono">total_contract_value</td><td>number (Decimal)</td><td>คำนวณ</td><td>รวม contract_value ของสัญญาทั้งหมดของ site</td></tr>
+    <tr><td class="mono">created / updated / deleted _at, _by</td><td>datetime, string</td><td>เก็บ</td><td>ทุกการเขียนบันทึก actor จาก token; ลบเป็น soft delete</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2>4. วงจรชีวิตของ site</h2>
+<figure>
+<div class="figwrap">
+<svg viewBox="0 0 960 280" role="img" aria-label="site เริ่มเป็น ACTIVE เมื่อสร้าง เปลี่ยนเป็น NEAR_CLOSE เมื่อ end_date เหลือไม่เกิน 90 วัน โดยอัตโนมัติ PATCH status เป็น COMPLETED ได้จากทุกสถานะ และ PATCH กลับเป็น ACTIVE ได้">
+  <defs>
+    <marker id="ah3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0 10 5 0 10z"/></marker>
+  </defs>
+
+  <circle cx="50" cy="152" r="7" class="dot"/>
+  <path class="ar" d="M57 152 H110" marker-end="url(#ah3)"/>
+  <text class="lb" x="80" y="96" text-anchor="middle">POST /sites</text>
+
+  <rect class="st st-on" x="110" y="110" width="220" height="84" rx="3"/>
+  <text class="st-t" x="126" y="132">ACTIVE</text>
+  <text class="st-s" x="126" y="150">stored ACTIVE</text>
+  <text class="st-s" x="126" y="168">end_date &gt; วันนี้+90 หรือว่าง</text>
+
+  <rect class="st" x="370" y="110" width="220" height="84" rx="3"/>
+  <text class="st-t" x="386" y="132">NEAR_CLOSE</text>
+  <text class="st-s" x="386" y="150">stored ACTIVE</text>
+  <text class="st-s" x="386" y="168">วันนี้ ≤ end_date ≤ +90</text>
+
+  <rect class="st" x="630" y="110" width="220" height="84" rx="3"/>
+  <text class="st-t" x="646" y="132">COMPLETED</text>
+  <text class="st-s" x="646" y="150">stored COMPLETED</text>
+  <text class="st-s" x="646" y="168">หรือ end_date ผ่านไปแล้ว</text>
+
+  <path class="ar" d="M330 138 H370" marker-end="url(#ah3)"/>
+  <text class="lb" x="350" y="96" text-anchor="middle">ถึงกำหนด (อัตโนมัติ)</text>
+
+  <path class="ar" d="M370 166 H330" marker-end="url(#ah3)"/>
+  <text class="lb" x="350" y="214" text-anchor="middle">PATCH end_date ให้ไกลกว่า 90 วัน</text>
+
+  <path class="ar" d="M590 152 H630" marker-end="url(#ah3)"/>
+  <text class="lb" x="610" y="96" text-anchor="middle">PATCH COMPLETED</text>
+
+  <path class="ar" d="M740 194 V236 H220 V194" marker-end="url(#ah3)"/>
+  <text class="lb" x="480" y="258" text-anchor="middle">PATCH status = ACTIVE (เปิดใหม่)</text>
+</svg>
+</div>
+<figcaption>ACTIVE เปลี่ยนเป็น NEAR_CLOSE เองตามวันที่ และเปลี่ยนเป็น COMPLETED เองเมื่อ end_date ผ่านไปแล้ว ไม่มีใครต้องกดปุ่ม PATCH status เป็น COMPLETED ทำได้เฉพาะเมื่อต้องการปิดก่อนถึงกำหนด ส่วน site ที่ไม่มี end_date จะอยู่ใน ACTIVE ตลอด</figcaption>
+</figure>
+
+<h2>5. แต่ละ API อ่านและเขียนอะไรบ้าง</h2>
+<div class="tbl-wrap">
+<table>
+  <thead>
+    <tr><th>Endpoint</th><th>อ่าน</th><th>เขียน</th><th>หมายเหตุ</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="mono">GET /sites</td><td>sites, contracts (นับและรวมค่า)</td><td>—</td><td>กรองด้วย status, type, date_from / date_to, search (search รวมชื่อสัญญาด้วย)</td></tr>
+    <tr><td class="mono">GET /sites/{id}</td><td>sites, contracts, files (links.site)</td><td>—</td><td>ไม่พบหรือถูกลบแล้ว ได้ 404</td></tr>
+    <tr><td class="mono">POST /sites/preview</td><td>contracts (เลขซ้ำ), vendors (ชื่อ), counters</td><td>—</td><td>ไม่เลื่อนเลข counter และไม่บันทึกอะไร</td></tr>
+    <tr><td class="mono">POST /sites</td><td>contracts, vendors, files, counters</td><td>sites, vendors (ใหม่), contracts, files (links)</td><td>counter เลื่อนก่อนเข้า transaction ที่เหลืออยู่ใน transaction เดียว</td></tr>
+    <tr><td class="mono">PATCH /sites/{id}</td><td>sites</td><td>sites (เฉพาะฟิลด์ที่ส่งมา)</td><td>ตรวจ end_date ไม่ก่อน start_date ไม่แตะสัญญาหรือไฟล์</td></tr>
+    <tr><td class="mono">DELETE /sites/{id}</td><td>contracts (นับที่ยังไม่ถูกลบ)</td><td>sites, files (links.site) ทั้งหมด (soft delete)</td><td>มีสัญญาอยู่ได้ 409; ไฟล์ที่ผูกไว้ถูก soft delete ด้วย (S3 คงไว้)</td></tr>
+    <tr><td class="mono">POST /sites/ocr</td><td>ไฟล์ที่ส่งมา</td><td>—</td><td>อ่านแล้วคืนค่า ไม่บันทึก</td></tr>
+    <tr><td class="mono">POST /sites/attachments/{id}/ocr</td><td>files</td><td>files (ocr_*)</td><td>ไม่แตะ site</td></tr>
+    <tr><td class="mono">GET /sites/attachment-categories</td><td>ค่าคงที่</td><td>—</td><td>4 หมวด: MAIN_CONTRACT, BOQ, SITE_SAFETY_PLAN, OTHER</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2>6. ไฟล์แนบของ site</h2>
+<figure>
+<div class="figwrap">
+<svg viewBox="0 0 960 250" role="img" aria-label="ไฟล์แนบของ site เริ่มจาก presign สถานะ PENDING อัปโหลดตรงไป S3 complete เปลี่ยนเป็น UPLOADED OCR เป็นขั้นเลือกทำได้ แล้วส่ง attachment_ids ตอนบันทึก site จึงผูกไฟล์กับ site">
+  <defs>
+    <marker id="ah4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0 10 5 0 10z"/></marker>
+  </defs>
+
+  <rect class="st" x="30" y="70" width="150" height="120" rx="3"/>
+  <text class="st-t" x="42" y="96">presign</text>
+  <text class="fl" x="42" y="118">POST /files/presign</text>
+  <text class="st-s" x="42" y="140">สถานะ PENDING</text>
+
+  <rect class="st" x="210" y="70" width="150" height="120" rx="3"/>
+  <text class="st-t" x="222" y="96">อัปโหลด</text>
+  <text class="st-s" x="222" y="118">browser ส่งไป S3</text>
+  <text class="st-s" x="222" y="136">ตรงโดยไม่ผ่าน API</text>
+
+  <rect class="st" x="390" y="70" width="150" height="120" rx="3"/>
+  <text class="st-t" x="402" y="96">complete</text>
+  <text class="st-s" x="402" y="118">ตรวจไฟล์ใน S3</text>
+  <text class="st-s" x="402" y="136">สถานะ UPLOADED</text>
+
+  <rect class="st" x="570" y="70" width="150" height="120" rx="3"/>
+  <text class="st-t" x="582" y="96">OCR</text>
+  <text class="st-s" x="582" y="118">ไม่บังคับ</text>
+  <text class="st-s" x="582" y="136">ผลเก็บที่ ocr_fields</text>
+
+  <rect class="st st-on" x="750" y="70" width="180" height="120" rx="3"/>
+  <text class="st-t" x="762" y="96">POST /sites</text>
+  <text class="fl" x="762" y="118">attachment_ids</text>
+  <text class="fl" x="762" y="136">→ links.site</text>
+  <text class="fl" x="762" y="154">contract.attachment_id</text>
+  <text class="fl" x="762" y="172">→ links.contract</text>
+
+  <path class="ar" d="M180 130 H210" marker-end="url(#ah4)"/>
+  <path class="ar" d="M360 130 H390" marker-end="url(#ah4)"/>
+  <path class="ar" d="M540 130 H570" marker-end="url(#ah4)"/>
+  <path class="ar" d="M720 130 H750" marker-end="url(#ah4)"/>
+
+  <text class="note-m" x="30" y="220">ถ้าไม่ต้องการ OCR ข้ามขั้น 4 ได้ และ POST /files ส่งไฟล์ครั้งเดียวก็ทำขั้น 1–3 ให้แล้ว</text>
+  <text class="note-m" x="30" y="240">ไฟล์ที่ผูกกับ site แล้วผูกซ้ำไม่ได้ (409) และต้องมี category ที่อยู่ในสี่หมวดข้างบน</text>
+</svg>
+</div>
+<figcaption>ไฟล์ต้องผ่าน complete (UPLOADED) ก่อน ถึงจะส่งเข้า site ได้ การผูกกับ site เกิดตอนบันทึก site ไม่ใช่ตอนอัปโหลด ดังนั้นไฟล์ที่อัปโหลดแล้วแต่ไม่ได้บันทึก site จะยังไม่มี links.site</figcaption>
+</figure>
+
+<footer>อ้างอิง: app/modules/sites/schema.py, repository.py, service.py · app/modules/contracts/repository.py · app/modules/files/repository.py</footer>
+</div>
